@@ -1,0 +1,149 @@
+.details-center-state {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.gallery-container {
+  margin-bottom: 2rem;
+}
+
+.property-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.property-meta {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.property-description {
+  color: var(--text-light);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.amenities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.amenity-badge {
+  padding: 0.5rem 1rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.875rem;
+}
+
+.sidebar-container {
+  position: sticky;
+  top: 100px;
+}
+
+.price-card {
+  padding: 2rem;
+}
+
+.price-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.price-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  transition: color 0.2s;
+}
+
+.agent-info {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.chat-btn {
+  margin-bottom: 2rem;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+}
+
+.reviews-section {
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.reviews-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.reviews-warning {
+  padding: 1rem;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: var(--radius);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+}
+
+.empty-reviews {
+  color: var(--text-light);
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.review-item {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.review-rating {
+  color: #FBBF24;
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}

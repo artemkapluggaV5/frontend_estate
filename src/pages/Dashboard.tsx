@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
         <h1 className="dashboard-title">
           {role === 'admin' ? 'Панель администратора' : role === 'realtor' ? 'Рабочий стол риелтора' : 'Личный кабинет'}
         </h1>
-        {role === 'realtor' && (
+        {role === 'admin' && (
           <Link to="/create-property" className="btn btn-primary">
             + Добавить объект
           </Link>
@@ -230,7 +230,7 @@ const Dashboard: React.FC = () => {
                   {getStatusBadge(req.status)}
                   
                   {role !== 'client' && req.status === 'new' && (
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
                       <button onClick={() => {
                         setSchedulingRequestId(req.id);
                         setScheduledDate(req.scheduled_time ? new Date(req.scheduled_time) : null);

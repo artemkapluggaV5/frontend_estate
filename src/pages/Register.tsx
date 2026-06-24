@@ -21,14 +21,14 @@ const Register: React.FC = () => {
         password,
         role: 'client'
       });
-      
+
       // Auto-login after successful registration
       const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
         username,
         password
       });
       localStorage.setItem('token', loginResponse.data.access);
-      
+
       const userResponse = await axios.get('http://127.0.0.1:8000/api/users/', {
         headers: { Authorization: `Bearer ${loginResponse.data.access}` }
       });
@@ -38,7 +38,7 @@ const Register: React.FC = () => {
         localStorage.setItem('userId', currentUser.id);
         localStorage.setItem('username', currentUser.username);
       }
-      
+
       toast.success('Регистрация прошла успешно!');
       navigate('/');
     } catch (error: any) {
@@ -58,41 +58,41 @@ const Register: React.FC = () => {
         <form onSubmit={handleRegister}>
           <div className="input-group">
             <label>Имя пользователя</label>
-            <input 
-              type="text" 
-              className="input-field" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              required 
+            <input
+              type="text"
+              className="input-field"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
           <div className="input-group">
             <label>Email</label>
-            <input 
-              type="email" 
-              className="input-field" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <input
+              type="email"
+              className="input-field"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="input-group">
             <label>Телефон</label>
-            <input 
-              type="text" 
-              className="input-field" 
-              value={phone_number} 
-              onChange={(e) => setPhone(e.target.value)} 
+            <input
+              type="text"
+              className="input-field"
+              value={phone_number}
+              onChange={(e) => setPhone(e.target.value)}
             />
           </div>
           <div className="input-group">
             <label>Пароль</label>
-            <input 
-              type="password" 
-              className="input-field" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <input
+              type="password"
+              className="input-field"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <button type="submit" className="btn btn-primary auth-btn">

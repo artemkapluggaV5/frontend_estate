@@ -16,6 +16,7 @@ import ChatPage from './pages/ChatPage';
 import CreatePropertyPage from './pages/CreatePropertyPage';
 import About from './pages/About';
 import Contacts from './pages/Contacts';
+import NotFound from './pages/errors/NotFound';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="/create-property" element={<CreatePropertyPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

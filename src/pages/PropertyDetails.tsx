@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import ViewingRequestForm from '../components/ViewingRequestForm';
+import CustomDropdown from '../components/CustomDropdown';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
@@ -17,6 +18,7 @@ const PropertyDetails: React.FC = () => {
   const [property, setProperty] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const isAuthenticated = !!localStorage.getItem('token');
+  const role = localStorage.getItem('role');
   const [favoriteId, setFavoriteId] = useState<number | null>(null);
   const [reviews, setReviews] = useState<any[]>([]);
   const [newReviewRating, setNewReviewRating] = useState<number>(5);
@@ -62,7 +64,7 @@ const PropertyDetails: React.FC = () => {
       } else {
         const res = await axios.post('http://127.0.0.1:8000/api/favorites/', { property: property.id }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
         setFavoriteId(res.data.id);
-        toast.success('Добавлено в избранное! ❤️');
+        toast.success('Добавлено в избранное!', { icon: <i className="pi pi-heart-fill" style={{ color: 'var(--danger)' }}></i> });
       }
       window.dispatchEvent(new Event('favoritesUpdated'));
     } catch (error) {
@@ -156,7 +158,7 @@ const PropertyDetails: React.FC = () => {
               <h2 className="price-value">
                 {parseFloat(property.price).toLocaleString('ru-RU')} ₽
               </h2>
-              {isAuthenticated && (
+              {isAuthenticated && role !== 'realtor' && (
                 <button
                   onClick={handleToggleFavorite}
                   className="favorite-btn"
@@ -165,26 +167,31 @@ const PropertyDetails: React.FC = () => {
                   }}
                   title={favoriteId ? "Удалить из избранного" : "Добавить в избранное"}
                 >
-                  {favoriteId ? '❤️' : '🤍'}
+                  {favoriteId ? <i className="pi pi-heart-fill"></i> : <i className="pi pi-heart"></i>}
                 </button>
               )}
             </div>
             <p className="agent-info">
               Риелтор: {property.agent_details ? `${property.agent_details.user_details?.first_name || property.agent_details.user_details?.username}` : 'Не назначен'}
             </p>
-            {isAuthenticated && property.agent_details && (
+            {isAuthenticated && property.agent_details && role !== 'realtor' && (
               <button onClick={startChat} className="btn btn-secondary chat-btn">
-                💬 Написать риелтору
+                <i className="pi pi-comments" style={{ marginRight: '8px' }}></i> Написать риелтору
               </button>
             )}
           </div>
-          {property.is_booked ? (
-            <div className="card" style={{ padding: '2rem', marginTop: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)' }}>
+          {role === 'realtor' ? (
+            <div className="card status-card" style={{ marginTop: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-light)', marginBottom: '0.5rem' }}>Режим риелтора</h3>
+              <p style={{ color: 'var(--text-light)' }}>Действия покупателя недоступны.</p>
+            </div>
+          ) : property.is_booked ? (
+            <div className="card status-card" style={{ marginTop: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)' }}>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--danger)', marginBottom: '1rem' }}>КУПЛЕНО</h3>
               <p style={{ color: 'var(--text-light)' }}>К сожалению, этот объект уже куплен другим клиентом.</p>
             </div>
           ) : property.has_user_requested ? (
-            <div className="card" style={{ padding: '2rem', marginTop: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)' }}>
+            <div className="card status-card" style={{ marginTop: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)' }}>
               <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '1rem' }}>Вы уже записались</h3>
               <p style={{ color: 'var(--text-light)' }}>Ваша заявка в обработке. Отслеживайте её статус в личном кабинете.</p>
             </div>
@@ -200,22 +207,23 @@ const PropertyDetails: React.FC = () => {
           Внимание: возможность оставлять отзывы доступна только клиентам, оплатившим объект.
         </div>
 
-        {isAuthenticated && (
+        {isAuthenticated && role !== 'realtor' && (
           <form onSubmit={handleReviewSubmit} className="review-form" style={{ marginTop: '1rem', marginBottom: '2rem' }}>
             <div className="input-group">
               <label>Ваша оценка:</label>
-              <select
-                className="input-field"
+              <CustomDropdown
                 value={newReviewRating}
-                onChange={e => setNewReviewRating(Number(e.target.value))}
-                style={{ maxWidth: '150px' }}
-              >
-                <option value={5}>★★★★★ (5)</option>
-                <option value={4}>★★★★☆ (4)</option>
-                <option value={3}>★★★☆☆ (3)</option>
-                <option value={2}>★★☆☆☆ (2)</option>
-                <option value={1}>★☆☆☆☆ (1)</option>
-              </select>
+                onChange={value => setNewReviewRating(Number(value))}
+                options={[
+                  { label: 'Отлично (5)', value: 5 },
+                  { label: 'Хорошо (4)', value: 4 },
+                  { label: 'Нормально (3)', value: 3 },
+                  { label: 'Плохо (2)', value: 2 },
+                  { label: 'Ужасно (1)', value: 1 },
+                ]}
+                optionLabel="label"
+                optionValue="value"
+              />
             </div>
             <div className="input-group">
               <label>Текст отзыва:</label>
@@ -238,7 +246,11 @@ const PropertyDetails: React.FC = () => {
               <div key={r.id} className="review-item">
                 <div className="review-header">
                   <strong>{r.user_details?.username}</strong>
-                  <span className="review-rating">{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                  <span className="review-rating">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <i key={i} className={i < r.rating ? "pi pi-star-fill" : "pi pi-star"} style={{ color: i < r.rating ? "var(--accent)" : "var(--border)" }}></i>
+                    ))}
+                  </span>
                 </div>
                 <p>{r.comment}</p>
                 <div className="review-date">

@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Calendar } from 'primereact/calendar';
+import Pagination from '../components/Pagination';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
@@ -14,6 +15,8 @@ const Dashboard: React.FC = () => {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [schedulingRequestId, setSchedulingRequestId] = useState<number | null>(null);
   const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const navigate = useNavigate();
   const location = useLocation();
   const role = localStorage.getItem('role');
@@ -27,6 +30,7 @@ const Dashboard: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRequests(response.data);
+      setCurrentPage(1);
     } catch (error) {
       console.error('Error fetching requests:', error);
     } finally {
@@ -147,6 +151,9 @@ const Dashboard: React.FC = () => {
     );
   };
 
+  const totalPages = Math.ceil(requests.length / itemsPerPage);
+  const paginatedRequests = requests.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
     <div className="container">
       <div className="dashboard-header">
@@ -163,7 +170,7 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-content">
         <div className="card profile-card">
           <div className="profile-avatar">
-            {profileData.first_name ? profileData.first_name[0].toUpperCase() : (profileData.username ? profileData.username[0].toUpperCase() : '👤')}
+            {profileData.first_name ? profileData.first_name[0].toUpperCase() : (profileData.username ? profileData.username[0].toUpperCase() : <i className="pi pi-user"></i>)}
           </div>
           <h2 className="profile-name">
             {profileData.first_name || profileData.last_name ? `${profileData.first_name} ${profileData.last_name}` : profileData.username}
@@ -199,7 +206,7 @@ const Dashboard: React.FC = () => {
           <p className="empty-requests">У вас пока нет заявок.</p>
         ) : (
           <div className="requests-list">
-            {requests.map((req: any) => (
+            {paginatedRequests.map((req: any) => (
               <div key={req.id} className="request-item">
                 <div>
                   <h4 className="request-title">
@@ -212,7 +219,7 @@ const Dashboard: React.FC = () => {
                   </p>
                   {req.scheduled_time && (
                     <p className="request-scheduled">
-                      ⏰ {req.status === 'new' ? 'Желаемое время:' : 'Назначено на:'} {new Date(req.scheduled_time).toLocaleString('ru-RU')}
+                      <i className="pi pi-clock" style={{marginRight: '6px'}}></i> {req.status === 'new' ? 'Желаемое время:' : 'Назначено на:'} {new Date(req.scheduled_time).toLocaleString('ru-RU')}
                     </p>
                   )}
                   {req.comment && (
@@ -280,7 +287,7 @@ const Dashboard: React.FC = () => {
                   )}
                   {role === 'client' && req.status === 'completed' && req.is_paid && (
                     <span style={{color: 'var(--success)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-                      ✓ Оплачено
+                      <i className="pi pi-check-circle"></i> Оплачено
                     </span>
                   )}
                   {(role === 'client' || role === 'admin') && (req.status === 'new' || req.status === 'scheduled') && (
@@ -291,6 +298,13 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             ))}
+            {requests.length > 0 && (
+              <Pagination 
+                currentPage={currentPage} 
+                totalPages={totalPages} 
+                onPageChange={setCurrentPage} 
+              />
+            )}
           </div>
         )}
         </div>

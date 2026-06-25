@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
@@ -21,6 +22,7 @@ import NotFound from './pages/errors/NotFound';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="app-wrapper">
         <ToastContainer position="bottom-right" autoClose={3000} theme="colored" />
         <Navbar />

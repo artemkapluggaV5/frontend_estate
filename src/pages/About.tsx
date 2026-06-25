@@ -20,21 +20,21 @@ const About: React.FC = () => {
         marginBottom: '4rem'
       }}>
         <div className="card" style={{ padding: '2.5rem', textAlign: 'center', borderRadius: 'var(--radius)', background: 'rgba(var(--surface-rgb), 0.6)', backdropFilter: 'blur(10px)' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏡</div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--primary)' }}><i className="pi pi-home"></i></div>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text)' }}>Огромный выбор</h3>
           <p style={{ color: 'var(--text-light)', lineHeight: 1.6 }}>
             Мы предлагаем тысячи проверенных объектов: от уютных студий до роскошных вилл на побережье.
           </p>
         </div>
         <div className="card" style={{ padding: '2.5rem', textAlign: 'center', borderRadius: 'var(--radius)', background: 'rgba(var(--surface-rgb), 0.6)', backdropFilter: 'blur(10px)' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔒</div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--primary)' }}><i className="pi pi-shield"></i></div>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text)' }}>Безопасность сделок</h3>
           <p style={{ color: 'var(--text-light)', lineHeight: 1.6 }}>
             Полное юридическое сопровождение на каждом этапе. Ваши деньги и документы в полной безопасности.
           </p>
         </div>
         <div className="card" style={{ padding: '2.5rem', textAlign: 'center', borderRadius: 'var(--radius)', background: 'rgba(var(--surface-rgb), 0.6)', backdropFilter: 'blur(10px)' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⭐</div>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem', color: 'var(--primary)' }}><i className="pi pi-star-fill"></i></div>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text)' }}>Опытные эксперты</h3>
           <p style={{ color: 'var(--text-light)', lineHeight: 1.6 }}>
             Наши риелторы — настоящие профессионалы, которые знают рынок изнутри и подберут лучшее предложение для вас.

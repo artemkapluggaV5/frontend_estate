@@ -52,7 +52,7 @@ const FavoritesPage: React.FC = () => {
                 className="remove-favorite-btn"
                 title="Удалить из избранного"
               >
-                ✕
+                <i className="pi pi-times"></i>
               </button>
             </div>
           ))}

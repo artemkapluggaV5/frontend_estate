@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
           
           // If we have more unread notifications than before, show a toast!
           if (unreadCount !== 0 && unread.length > unreadCount) {
-            toast.info('У вас новое уведомление!', { icon: '🔔' });
+            toast.info('У вас новое уведомление!', { icon: <i className="pi pi-bell"></i> });
           }
           
           setUnreadCount(unread.length);
@@ -82,7 +82,7 @@ const Navbar: React.FC = () => {
           Юг-Хаус
         </Link>
         <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? '✕' : '☰'}
+          {menuOpen ? <i className="pi pi-times"></i> : <i className="pi pi-bars"></i>}
         </button>
         <nav className="desktop-nav" style={{ flexGrow: 1, marginLeft: '2rem' }}>
           <Link to="/" style={{ fontWeight: 500 }}>Главная</Link>
@@ -93,9 +93,9 @@ const Navbar: React.FC = () => {
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             {isAuthenticated ? (
               <>
-                <Link to="/chat" style={{ fontSize: '1.25rem', textDecoration: 'none' }} title="Чат">💬</Link>
+                <Link to="/chat" style={{ fontSize: '1.25rem', textDecoration: 'none' }} title="Чат"><i className="pi pi-comments text-primary"></i></Link>
                 <Link to="/favorites" style={{ fontSize: '1.25rem', textDecoration: 'none', position: 'relative' }} title="Избранное">
-                  ❤️
+                  <i className="pi pi-heart-fill" style={{ color: 'var(--danger)' }}></i>
                   {favoritesCount > 0 && (
                     <span style={{
                       position: 'absolute', top: '-8px', right: '-12px',
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
                   )}
                 </Link>
                 <Link to="/notifications" style={{ fontSize: '1.25rem', textDecoration: 'none', position: 'relative' }} title="Уведомления">
-                  🔔
+                  <i className="pi pi-bell text-text-light"></i>
                   {unreadCount > 0 && (
                     <span style={{
                       position: 'absolute', top: '-8px', right: '-12px',
@@ -123,9 +123,9 @@ const Navbar: React.FC = () => {
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: '0.5rem', paddingLeft: '1.5rem', borderLeft: '1px solid var(--border)' }}>
                   <Link to="/dashboard" style={{ fontWeight: 600, color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }} title="Личный кабинет">
-                    👤 <span>{username}</span>
+                    <i className="pi pi-user"></i> <span>{username}</span>
                   </Link>
-                  <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }} title="Выйти">🚪 Выйти</button>
+                  <button onClick={handleLogout} className="btn btn-secondary" style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }} title="Выйти"><i className="pi pi-sign-out"></i> Выйти</button>
                 </div>
               </>
             ) : (
@@ -144,12 +144,12 @@ const Navbar: React.FC = () => {
         <Link to="/contacts" onClick={() => setMenuOpen(false)} style={{ fontWeight: 500 }}>Контакты</Link>
         {isAuthenticated && (
           <>
-            <Link to="/chat" onClick={() => setMenuOpen(false)} style={{ fontWeight: 500, color: 'var(--text)' }}>💬 Чат</Link>
+            <Link to="/chat" onClick={() => setMenuOpen(false)} style={{ fontWeight: 500, color: 'var(--text)' }}><i className="pi pi-comments" style={{marginRight: '8px'}}></i>Чат</Link>
             <Link to="/favorites" onClick={() => setMenuOpen(false)} style={{ fontWeight: 500, color: 'var(--danger)' }}>
-              ❤️ Избранное ({favoritesCount})
+              <i className="pi pi-heart" style={{marginRight: '8px'}}></i>Избранное ({favoritesCount})
             </Link>
             <Link to="/notifications" onClick={() => setMenuOpen(false)} style={{ fontWeight: 500, color: 'var(--text)' }}>
-              🔔 Уведомления {unreadCount > 0 && `(${unreadCount})`}
+              <i className="pi pi-bell" style={{marginRight: '8px'}}></i>Уведомления {unreadCount > 0 && `(${unreadCount})`}
             </Link>
           </>
         )}

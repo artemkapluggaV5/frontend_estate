@@ -122,3 +122,19 @@
   justify-content: center;
   color: var(--text-light);
 }
+
+@media (max-width: 768px) {
+  .chat-container {
+    flex-direction: column;
+    height: auto;
+    min-height: calc(100vh - 100px);
+  }
+  .chat-sidebar {
+    width: 100%;
+    max-height: 250px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chat-main {
+    height: 60vh;
+  }
+}

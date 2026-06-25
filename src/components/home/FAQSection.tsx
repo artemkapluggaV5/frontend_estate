@@ -45,7 +45,7 @@ const FAQSection: React.FC = () => {
   return (
     <section style={{ marginBottom: '4rem' }}>
       <h2 style={{ fontSize: '2rem', fontWeight: 700, marginBottom: '2rem' }}>Продать или купить недвижимость в Белореченске</h2>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1rem' }}>
+      <div className="faq-grid">
         {faqs.map((faq, idx) => (
           <div key={idx} style={{
             background: 'var(--surface)',

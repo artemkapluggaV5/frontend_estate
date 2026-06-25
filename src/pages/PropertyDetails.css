@@ -9,6 +9,9 @@
   gap: 3rem;
   align-items: start;
 }
+.details-grid > * {
+  min-width: 0;
+}
 
 .gallery-container {
   margin-bottom: 2rem;
@@ -18,12 +21,16 @@
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .property-meta {
   font-size: 1.25rem;
   color: var(--text-light);
   margin-bottom: 2rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .section-title {
@@ -53,11 +60,12 @@
 }
 
 .sidebar-container {
-  position: sticky;
-  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.price-card {
+.price-card, .status-card, .request-form-card {
   padding: 2rem;
 }
 
@@ -146,4 +154,84 @@
   font-size: 0.75rem;
   color: var(--text-light);
   margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .details-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .sidebar-container {
+    position: static;
+  }
+  
+  .property-title {
+    font-size: 1.75rem;
+  }
+  
+  .price-value {
+    font-size: 1.5rem;
+  }
+
+  .price-card, .card, .status-card, .request-form-card {
+    padding: 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .sidebar-container {
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .input-field {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .reviews-section {
+    padding: 1.5rem;
+  }
+}
+
+/* Gallery Grid Styling */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.gallery-grid .main-image-link {
+  grid-column: span 4;
+  aspect-ratio: 16 / 9;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.gallery-grid .thumb-link {
+  aspect-ratio: 4 / 3;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-grid a:hover img {
+  transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    gap: 0.5rem;
+  }
 }

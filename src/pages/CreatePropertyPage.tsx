@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { MultiSelect } from 'primereact/multiselect';
+import CustomMultiSelect from '../components/CustomMultiSelect';
+import CustomDropdown from '../components/CustomDropdown';
 import './CreatePropertyPage.css';
 
 const CreatePropertyPage: React.FC = () => {
@@ -82,10 +83,14 @@ const CreatePropertyPage: React.FC = () => {
           <div className="form-grid">
             <div className="input-group">
               <label>Категория *</label>
-              <select className="input-field" required value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
-                <option value="">Выберите категорию</option>
-                {categories.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+              <CustomDropdown
+                value={formData.category}
+                onChange={value => setFormData({...formData, category: value})}
+                options={categories}
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Выберите категорию"
+              />
             </div>
             <div className="input-group">
               <label>Заголовок *</label>
@@ -108,15 +113,13 @@ const CreatePropertyPage: React.FC = () => {
 
           <div className="input-group form-group">
             <label className="form-label">Удобства</label>
-            <MultiSelect 
+            <CustomMultiSelect 
               value={selectedAmenities} 
               options={amenities} 
-              onChange={(e) => setSelectedAmenities(e.value)} 
+              onChange={(value) => setSelectedAmenities(value)} 
               optionLabel="name" 
               optionValue="id"
               placeholder="Выберите удобства (кондиционер, Wi-Fi...)" 
-              display="chip"
-              className="custom-dropdown w-full"
             />
           </div>
           

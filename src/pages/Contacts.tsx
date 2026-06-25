@@ -21,7 +21,7 @@ const Contacts: React.FC = () => {
       }}>
         <div className="card" style={{ padding: '2rem' }}>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            📍 Наш офис
+            <i className="pi pi-map-marker text-primary"></i> Наш офис
           </h3>
           <p style={{ color: 'var(--text-light)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             г. Белореченск, ул. Курортный проспект, д. 100<br />
@@ -31,7 +31,7 @@ const Contacts: React.FC = () => {
 
         <div className="card" style={{ padding: '2rem' }}>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            📞 Телефоны
+            <i className="pi pi-phone text-primary"></i> Телефоны
           </h3>
           <p style={{ color: 'var(--text-light)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             <strong>Отдел продаж:</strong> +7 (800) 555-35-35<br />
@@ -41,7 +41,7 @@ const Contacts: React.FC = () => {
 
         <div className="card" style={{ padding: '2rem' }}>
           <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', color: 'var(--text)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            ✉️ Email
+            <i className="pi pi-envelope text-primary"></i> Email
           </h3>
           <p style={{ color: 'var(--text-light)', fontSize: '1.1rem', lineHeight: 1.6 }}>
             <strong>Общие вопросы:</strong> info@yughouse.ru<br />

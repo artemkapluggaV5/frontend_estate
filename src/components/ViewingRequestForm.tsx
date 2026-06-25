@@ -44,7 +44,7 @@ const ViewingRequestForm: React.FC<ViewingRequestFormProps> = ({ propertyId, onS
   };
 
   return (
-    <div className="card" style={{ padding: '2rem', marginTop: '2rem' }}>
+    <div className="card request-form-card" style={{ marginTop: '2rem' }}>
       <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' }}>Записаться на просмотр</h3>
       <p style={{ color: 'var(--text-light)', marginBottom: '1.5rem' }}>Оставьте комментарий к заявке, и наш агент свяжется с вами.</p>
       

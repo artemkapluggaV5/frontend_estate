@@ -25,11 +25,11 @@ const FeaturedProperties: React.FC = () => {
 
   return (
     <section style={{ marginBottom: '4rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '2rem', fontWeight: 700 }}>Купить квартиру в Белореченске</h2>
+      <div className="section-header">
+        <h2 style={{ fontSize: '2rem', fontWeight: 700, margin: 0 }}>Купить квартиру в Белореченске</h2>
         <button 
           className="btn btn-secondary" 
-          style={{ background: 'var(--secondary)', color: 'white', borderRadius: '50px', padding: '0.75rem 1.5rem', fontWeight: 600 }}
+          style={{ background: 'var(--secondary)', color: 'white', borderRadius: '50px', padding: '0.75rem 1.5rem', fontWeight: 600, flexShrink: 0 }}
           onClick={() => navigate('/catalog')}
         >
           Открыть все предложения

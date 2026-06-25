@@ -5,8 +5,8 @@ const FeaturedHighlight: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <section style={{ marginBottom: '5rem', background: 'var(--surface)', borderRadius: 'var(--radius)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', display: 'flex', flexWrap: 'wrap' }}>
-      <div style={{ flex: '1 1 50%', minHeight: '400px', position: 'relative' }}>
+    <section className="split-card" style={{ marginBottom: '5rem' }}>
+      <div className="split-card-img">
         <img 
           src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
           alt="Новостройка в Белореченске" 
@@ -14,7 +14,7 @@ const FeaturedHighlight: React.FC = () => {
         />
       </div>
       
-      <div style={{ flex: '1 1 50%', padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div className="split-card-content">
         <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', lineHeight: 1.3 }}>
           Новостройка в Белореченске: 5 минутах от центрального парка и набережной
         </h2>

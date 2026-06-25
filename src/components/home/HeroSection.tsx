@@ -36,7 +36,7 @@ const HeroSection: React.FC = () => {
       }}></div>
 
       <div style={{ position: 'relative', zIndex: 3, maxWidth: '800px', padding: '0 2rem' }}>
-        <h1 style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1rem', lineHeight: 1.2 }}>
+        <h1 className="hero-title">
           Инвестируйте в недвижимость Белореченска <br/> с Юг-Хаус
         </h1>
         <p style={{ fontSize: '1.25rem', fontWeight: 500, marginBottom: '2rem', color: 'rgba(255,255,255,0.9)', letterSpacing: '0.5px' }}>

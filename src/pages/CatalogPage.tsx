@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropertyCard from '../components/PropertyCard';
-import { Dropdown } from 'primereact/dropdown';
+import CustomDropdown from '../components/CustomDropdown';
+import Pagination from '../components/Pagination';
 import './CatalogPage.css';
 
 const CatalogPage: React.FC = () => {
@@ -9,6 +10,8 @@ const CatalogPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   const fetchProperties = async () => {
     setLoading(true);
@@ -23,6 +26,7 @@ const CatalogPage: React.FC = () => {
 
       const response = await axios.get(`http://127.0.0.1:8000/api/properties/?${params.toString()}`);
       setProperties(response.data);
+      setCurrentPage(1);
     } catch (error) {
       console.error('Error fetching properties:', error);
     } finally {
@@ -33,6 +37,9 @@ const CatalogPage: React.FC = () => {
   useEffect(() => {
     fetchProperties();
   }, []);
+
+  const totalPages = Math.ceil(properties.length / itemsPerPage);
+  const paginatedProperties = properties.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="container">
@@ -48,22 +55,23 @@ const CatalogPage: React.FC = () => {
           <h3 className="sidebar-title">Фильтры</h3>
           <div className="input-group filter-group">
             <label className="filter-label">Тип недвижимости</label>
-            <Dropdown 
-              value={category} 
+            <CustomDropdown
+              value={category}
               options={[
                 { label: 'Все', value: 'all' },
                 { label: 'Квартира', value: 'Квартира' },
                 { label: 'Дом', value: 'Дом' }
-              ]} 
-              onChange={e => setCategory(e.value)} 
-              placeholder="Все" 
-              className="custom-dropdown w-full"
+              ]}
+              onChange={value => setCategory(value)}
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Все"
             />
           </div>
           <div className="input-group">
             <label className="filter-label">Цена до (₽)</label>
-            <Dropdown 
-              value={maxPrice} 
+            <CustomDropdown
+              value={maxPrice}
               options={[
                 { label: 'Любая', value: null },
                 { label: 'До 3 000 000 ₽', value: 3000000 },
@@ -72,9 +80,10 @@ const CatalogPage: React.FC = () => {
                 { label: 'До 20 000 000 ₽', value: 20000000 },
                 { label: 'До 50 000 000 ₽', value: 50000000 }
               ]}
-              onChange={e => setMaxPrice(e.value)} 
-              placeholder="Любая" 
-              className="custom-dropdown w-full"
+              onChange={value => setMaxPrice(value)}
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Любая"
             />
           </div>
           <button className="btn btn-primary apply-btn" onClick={fetchProperties}>Применить</button>
@@ -87,10 +96,17 @@ const CatalogPage: React.FC = () => {
             <div className="empty-state">Объекты не найдены</div>
           ) : (
             <div className="property-grid">
-              {properties.map((prop: any) => (
+              {paginatedProperties.map((prop: any) => (
                 <PropertyCard key={prop.id} property={prop} />
               ))}
             </div>
+          )}
+          {properties.length > 0 && (
+            <Pagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              onPageChange={setCurrentPage} 
+            />
           )}
         </div>
       </div>

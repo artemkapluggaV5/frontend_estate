@@ -67,12 +67,6 @@ const Login: React.FC = () => {
             Войти
           </button>
         </form>
-        <p className="auth-demo-text">
-          Доступ для демонстрации:<br/>
-          client1 / clientpass<br/>
-          realtor1 / realtorpass<br/>
-          admin / adminpass
-        </p>
         <p className="auth-footer-text">
           Нет аккаунта? <Link to="/register" className="auth-link">Зарегистрируйтесь</Link>
         </p>

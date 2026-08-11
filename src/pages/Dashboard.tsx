@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import { Calendar } from 'primereact/calendar';
 import Pagination from '../components/Pagination';
@@ -26,7 +27,7 @@ const Dashboard: React.FC = () => {
 
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/requests/', {
+      const response = await axios.get(`${API_BASE}/api/requests/`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRequests(response.data);
@@ -44,7 +45,7 @@ const Dashboard: React.FC = () => {
     const verifyPaymentId = searchParams.get('verify_payment');
     if (verifyPaymentId && token && !verifiedRef.current) {
       verifiedRef.current = true;
-      axios.post(`http://127.0.0.1:8000/api/payments/${verifyPaymentId}/verify/`, {}, {
+      axios.post(`${API_BASE}/api/payments/${verifyPaymentId}/verify/`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       }).then(res => {
         if (res.data.status === 'success') {
@@ -69,7 +70,7 @@ const Dashboard: React.FC = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/`, {
+        const res = await axios.get(`${API_BASE}/api/users/${userId}/`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setProfileData(res.data);
@@ -90,7 +91,7 @@ const Dashboard: React.FC = () => {
       if (scheduledTime) {
         payload.scheduled_time = scheduledTime.toISOString();
       }
-      await axios.patch(`http://127.0.0.1:8000/api/requests/${id}/`, payload, {
+      await axios.patch(`${API_BASE}/api/requests/${id}/`, payload, {
         headers: { Authorization: `Bearer ${token}` }
       });
       // Update local state
@@ -123,7 +124,7 @@ const Dashboard: React.FC = () => {
   const handleProfileSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://127.0.0.1:8000/api/users/${userId}/`, profileData, {
+      await axios.patch(`${API_BASE}/api/users/${userId}/`, profileData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Профиль успешно обновлен!');
@@ -249,7 +250,7 @@ const Dashboard: React.FC = () => {
                         <button onClick={async () => {
                           try {
                             const token = localStorage.getItem('token');
-                            await axios.patch(`http://127.0.0.1:8000/api/requests/${req.id}/`, {
+                            await axios.patch(`${API_BASE}/api/requests/${req.id}/`, {
                               status: 'scheduled',
                               scheduled_time: req.scheduled_time
                             }, {
@@ -274,7 +275,7 @@ const Dashboard: React.FC = () => {
                   {role === 'client' && req.status === 'completed' && !req.is_paid && (
                     <button onClick={async () => {
                       try {
-                        const res = await axios.post(`http://127.0.0.1:8000/api/requests/${req.id}/create_payment/`, {}, {
+                        const res = await axios.post(`${API_BASE}/api/requests/${req.id}/create_payment/`, {}, {
                           headers: { Authorization: `Bearer ${token}` }
                         });
                         window.location.href = res.data.confirmation_url;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import { Calendar } from 'primereact/calendar';
 
@@ -22,7 +23,7 @@ const ViewingRequestForm: React.FC<ViewingRequestFormProps> = ({ propertyId, onS
 
     setLoading(true);
     try {
-      await axios.post('http://127.0.0.1:8000/api/requests/', {
+      await axios.post(`${API_BASE}/api/requests/`, {
         property: propertyId,
         comment: comment,
         scheduled_time: scheduledTime ? scheduledTime.toISOString() : null

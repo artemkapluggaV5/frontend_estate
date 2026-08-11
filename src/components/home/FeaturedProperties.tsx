@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../../api';
 import PropertyCard from '../PropertyCard';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +12,7 @@ const FeaturedProperties: React.FC = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/properties/');
+        const response = await axios.get(`${API_BASE}/api/properties/`);
         // take first 3 properties for the main page
         setProperties(response.data.slice(0, 3));
         setLoading(false);

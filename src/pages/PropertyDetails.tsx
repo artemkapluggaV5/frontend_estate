@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import ViewingRequestForm from '../components/ViewingRequestForm';
 import CustomDropdown from '../components/CustomDropdown';
@@ -28,7 +29,7 @@ const PropertyDetails: React.FC = () => {
       try {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const response = await axios.get(`http://127.0.0.1:8000/api/properties/${id}/`, { headers });
+        const response = await axios.get(`${API_BASE}/api/properties/${id}/`, { headers });
         setProperty(response.data);
       } catch (error) {
         console.error('Error fetching property:', error);
@@ -38,14 +39,14 @@ const PropertyDetails: React.FC = () => {
     };
     fetchProperty();
 
-    axios.get(`http://127.0.0.1:8000/api/reviews/`)
+    axios.get(`${API_BASE}/api/reviews/`)
       .then(res => setReviews(res.data.filter((r: any) => r.property === parseInt(id || '0'))))
       .catch(console.error);
   }, [id]);
 
   useEffect(() => {
     if (isAuthenticated && property) {
-      axios.get('http://127.0.0.1:8000/api/favorites/', { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+      axios.get(`${API_BASE}/api/favorites/`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
         .then(res => {
           const fav = res.data.find((f: any) => f.property === property.id);
           if (fav) setFavoriteId(fav.id);
@@ -58,11 +59,11 @@ const PropertyDetails: React.FC = () => {
     if (!isAuthenticated) return toast.warning('Пожалуйста, войдите в систему.');
     try {
       if (favoriteId) {
-        await axios.delete(`http://127.0.0.1:8000/api/favorites/${favoriteId}/`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+        await axios.delete(`${API_BASE}/api/favorites/${favoriteId}/`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
         setFavoriteId(null);
         toast.info('Удалено из избранного');
       } else {
-        const res = await axios.post('http://127.0.0.1:8000/api/favorites/', { property: property.id }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+        const res = await axios.post(`${API_BASE}/api/favorites/`, { property: property.id }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
         setFavoriteId(res.data.id);
         toast.success('Добавлено в избранное!', { icon: <i className="pi pi-heart-fill" style={{ color: 'var(--danger)' }}></i> });
       }
@@ -78,7 +79,7 @@ const PropertyDetails: React.FC = () => {
     if (!isAuthenticated) return toast.warning('Пожалуйста, войдите в систему.');
 
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/reviews/', {
+      const res = await axios.post(`${API_BASE}/api/reviews/`, {
         property: property.id,
         rating: newReviewRating,
         comment: newReviewComment

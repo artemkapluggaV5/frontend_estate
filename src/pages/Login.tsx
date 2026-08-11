@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import './Login.css';
 
@@ -12,14 +13,14 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+      const response = await axios.post(`${API_BASE}/api/token/`, {
         username,
         password
       });
       localStorage.setItem('token', response.data.access);
       
       // Fetch user info to get role and id
-      const userResponse = await axios.get('http://127.0.0.1:8000/api/users/', {
+      const userResponse = await axios.get(`${API_BASE}/api/users/`, {
         headers: { Authorization: `Bearer ${response.data.access}` }
       });
       // We need to find the user from the list matching username (since /api/users/ returns list)

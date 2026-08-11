@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import './NotificationsPage.css';
 
 const NotificationsPage: React.FC = () => {
@@ -9,7 +10,7 @@ const NotificationsPage: React.FC = () => {
 
   useEffect(() => {
     if (!token) return;
-    axios.get('http://127.0.0.1:8000/api/notifications/', {
+    axios.get(`${API_BASE}/api/notifications/`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       // Sort by newest first
@@ -20,7 +21,7 @@ const NotificationsPage: React.FC = () => {
       // Mark as read
       const unread = sorted.filter((n: any) => !n.is_read);
       unread.forEach((n: any) => {
-        axios.patch(`http://127.0.0.1:8000/api/notifications/${n.id}/`, { is_read: true }, {
+        axios.patch(`${API_BASE}/api/notifications/${n.id}/`, { is_read: true }, {
           headers: { Authorization: `Bearer ${token}` }
         }).catch(err => console.error(err));
       });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import PropertyCard from '../components/PropertyCard';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -12,7 +13,7 @@ const FavoritesPage: React.FC = () => {
 
   useEffect(() => {
     if (!token) return;
-    axios.get('http://127.0.0.1:8000/api/favorites/', {
+    axios.get(`${API_BASE}/api/favorites/`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(res => {
       setFavorites(res.data);
@@ -39,7 +40,7 @@ const FavoritesPage: React.FC = () => {
               <button 
                 onClick={async () => {
                   try {
-                    await axios.delete(`http://127.0.0.1:8000/api/favorites/${fav.id}/`, {
+                    await axios.delete(`${API_BASE}/api/favorites/${fav.id}/`, {
                       headers: { Authorization: `Bearer ${token}` }
                     });
                     setFavorites(favorites.filter((f: any) => f.id !== fav.id));

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import { Calendar } from 'primereact/calendar';
 
@@ -15,7 +16,7 @@ const RequestForm: React.FC<RequestFormProps> = ({ propertyId }) => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        axios.post('http://127.0.0.1:8000/api/requests/', {
+        axios.post(`${API_BASE}/api/requests/`, {
             property: propertyId,
             comment: comment,
             scheduled_time: scheduledTime ? scheduledTime.toISOString() : null

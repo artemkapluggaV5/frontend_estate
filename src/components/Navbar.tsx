@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { API_BASE } from '../api';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const fetchFavorites = () => {
       if (isAuthenticated) {
-        fetch('http://127.0.0.1:8000/api/favorites/', {
+        fetch(`${API_BASE}/api/favorites/`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
         .then(res => res.json())
@@ -26,7 +27,7 @@ const Navbar: React.FC = () => {
     
     const fetchUnread = () => {
       if (isAuthenticated) {
-        fetch('http://127.0.0.1:8000/api/notifications/', {
+        fetch(`${API_BASE}/api/notifications/`, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
         .then(res => res.json())

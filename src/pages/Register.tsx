@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import './Register.css';
 
@@ -14,7 +15,7 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('http://127.0.0.1:8000/api/users/', {
+      await axios.post(`${API_BASE}/api/users/`, {
         username,
         email,
         phone_number,
@@ -23,13 +24,13 @@ const Register: React.FC = () => {
       });
 
       // Auto-login after successful registration
-      const loginResponse = await axios.post('http://127.0.0.1:8000/api/token/', {
+      const loginResponse = await axios.post(`${API_BASE}/api/token/`, {
         username,
         password
       });
       localStorage.setItem('token', loginResponse.data.access);
 
-      const userResponse = await axios.get('http://127.0.0.1:8000/api/users/', {
+      const userResponse = await axios.get(`${API_BASE}/api/users/`, {
         headers: { Authorization: `Bearer ${loginResponse.data.access}` }
       });
       const currentUser = userResponse.data.find((u: any) => u.username === username);

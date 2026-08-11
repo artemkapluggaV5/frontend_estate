@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { toast } from 'react-toastify';
 import CustomMultiSelect from '../components/CustomMultiSelect';
 import CustomDropdown from '../components/CustomDropdown';
@@ -28,10 +29,10 @@ const CreatePropertyPage: React.FC = () => {
       navigate('/login');
       return;
     }
-    axios.get('http://127.0.0.1:8000/api/categories/')
+    axios.get(`${API_BASE}/api/categories/`)
       .then(res => setCategories(res.data))
       .catch(console.error);
-    axios.get('http://127.0.0.1:8000/api/amenities/')
+    axios.get(`${API_BASE}/api/amenities/`)
       .then(res => setAmenities(res.data))
       .catch(console.error);
   }, [token, navigate]);
@@ -42,7 +43,7 @@ const CreatePropertyPage: React.FC = () => {
     
     try {
       // 1. Create property
-      const res = await axios.post('http://127.0.0.1:8000/api/properties/', {
+      const res = await axios.post(`${API_BASE}/api/properties/`, {
         ...formData,
         price: parseFloat(formData.price),
         area: parseFloat(formData.area),
@@ -56,7 +57,7 @@ const CreatePropertyPage: React.FC = () => {
       // 2. Add photos
       for (let i = 0; i < photoUrls.length; i++) {
         if (photoUrls[i].trim() !== '') {
-          await axios.post('http://127.0.0.1:8000/api/photos/', {
+          await axios.post(`${API_BASE}/api/photos/`, {
             property: propertyId,
             image_path: photoUrls[i].trim(),
             is_main: i === 0 // First photo is main

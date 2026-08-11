@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './ChatPage.css';
@@ -18,7 +19,7 @@ const ChatPage: React.FC = () => {
   const fetchMessages = async () => {
     if (!token) return;
     try {
-      const res = await axios.get('http://127.0.0.1:8000/api/chats/', { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`${API_BASE}/api/chats/`, { headers: { Authorization: `Bearer ${token}` }});
       setMessages(res.data.sort((a: any, b: any) => new Date(a.sent_at).getTime() - new Date(b.sent_at).getTime()));
     } catch (error) {
       console.error(error);
@@ -94,7 +95,7 @@ const ChatPage: React.FC = () => {
   const sendMessage = async () => {
     if (!newMessage.trim() || !activeChatData) return;
     try {
-      await axios.post('http://127.0.0.1:8000/api/chats/', {
+      await axios.post(`${API_BASE}/api/chats/`, {
         recipient: activeChatData.otherUserId,
         property: activeChatData.propertyId,
         message_text: newMessage

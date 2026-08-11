@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE } from '../api';
 import PropertyCard from '../components/PropertyCard';
 import CustomDropdown from '../components/CustomDropdown';
 import Pagination from '../components/Pagination';
@@ -24,7 +25,7 @@ const CatalogPage: React.FC = () => {
         params.append('max_price', maxPrice.toString());
       }
 
-      const response = await axios.get(`http://127.0.0.1:8000/api/properties/?${params.toString()}`);
+      const response = await axios.get(`${API_BASE}/api/properties/?${params.toString()}`);
       setProperties(response.data);
       setCurrentPage(1);
     } catch (error) {

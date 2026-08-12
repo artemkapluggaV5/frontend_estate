@@ -44,10 +44,25 @@ const Register: React.FC = () => {
       navigate('/');
     } catch (error: any) {
       console.error('Register error', error);
-      if (error.response?.data?.username) {
-        toast.error('Пользователь с таким именем уже существует.');
+      if (error.response?.data) {
+        const errors = error.response.data;
+        if (errors.username) {
+          toast.error(errors.username[0]);
+        }
+        if (errors.password) {
+          toast.error(errors.password[0]);
+        }
+        if (errors.email) {
+          toast.error(errors.email[0]);
+        }
+        if (errors.phone_number) {
+          toast.error(errors.phone_number[0]);
+        }
+        if (!errors.username && !errors.password && !errors.email && !errors.phone_number) {
+          toast.error('Ошибка при регистрации. Проверьте введенные данные.');
+        }
       } else {
-        toast.error('Ошибка при регистрации. Проверьте введенные данные.');
+        toast.error('Ошибка при регистрации. Проверьте соединения с сервером.');
       }
     }
   };
@@ -65,6 +80,10 @@ const Register: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              minLength={4}
+              maxLength={30}
+              pattern="^[a-zA-Z0-9_]+$"
+              title="Только латинские буквы, цифры и подчеркивание (без пробелов)"
             />
           </div>
           <div className="input-group">
@@ -84,6 +103,9 @@ const Register: React.FC = () => {
               className="input-field"
               value={phone_number}
               onChange={(e) => setPhone(e.target.value)}
+              required
+              pattern="^(\+7|8)\d{10}$"
+              title="Введите российский номер телефона, начиная с +7 или 8 (например, +79991234567)"
             />
           </div>
           <div className="input-group">
@@ -94,6 +116,7 @@ const Register: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={8}
             />
           </div>
           <button type="submit" className="btn btn-primary auth-btn">

@@ -1,0 +1,53 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API_BASE } from '../../api';
+import PropertyCard from '../PropertyCard';
+import { useNavigate } from 'react-router-dom';
+
+const FeaturedProperties: React.FC = () => {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const response = await axios.get(`${API_BASE}/api/properties/`);
+        // take first 3 properties for the main page
+        setProperties(response.data.slice(0, 3));
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching featured properties", error);
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  return (
+    <section style={{ marginBottom: '4rem' }}>
+      <div className="section-header">
+        <h2 style={{ fontSize: '2rem', fontWeight: 700, margin: 0 }}>Купить квартиру в Краснодарском крае</h2>
+        <button 
+          className="btn btn-secondary" 
+          style={{ background: 'var(--secondary)', color: 'white', borderRadius: '50px', padding: '0.75rem 1.5rem', fontWeight: 600, flexShrink: 0 }}
+          onClick={() => navigate('/catalog')}
+        >
+          Открыть все предложения
+        </button>
+      </div>
+
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '3rem' }}>Загрузка объектов...</div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          {properties.map((prop: any) => (
+            <PropertyCard key={prop.id} property={prop} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default FeaturedProperties;

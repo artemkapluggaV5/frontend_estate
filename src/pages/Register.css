@@ -1,0 +1,36 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2.5rem;
+}
+
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.875rem;
+}
+
+.auth-footer-text {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.auth-link {
+  color: var(--primary);
+  font-weight: 600;
+}

@@ -7,6 +7,7 @@ import './ChatPage.css';
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
+  const [guestChats, setGuestChats] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
@@ -16,11 +17,14 @@ const ChatPage: React.FC = () => {
   
   const location = useLocation();
 
-  const fetchMessages = async () => {
+  const fetchData = async () => {
     if (!token) return;
     try {
       const res = await axios.get(`${API_BASE}/api/chats/`, { headers: { Authorization: `Bearer ${token}` }});
       setMessages(res.data.sort((a: any, b: any) => new Date(a.sent_at).getTime() - new Date(b.sent_at).getTime()));
+      
+      const gRes = await axios.get(`${API_BASE}/api/guest-chats/`, { headers: { Authorization: `Bearer ${token}` }});
+      setGuestChats(gRes.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -29,8 +33,8 @@ const ChatPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchMessages();
-    const interval = setInterval(fetchMessages, 3000); // Polling every 3s
+    fetchData();
+    const interval = setInterval(fetchData, 3000); // Polling every 3s
     return () => clearInterval(interval);
   }, [token]);
 
@@ -39,7 +43,6 @@ const ChatPage: React.FC = () => {
     if (location.state?.startChatWith && location.state?.propertyId) {
       const { startChatWith, propertyId } = location.state;
       setActiveChat(`${propertyId}_${startChatWith}`);
-      // Clear state so it doesn't stuck
       window.history.replaceState({}, document.title)
     }
   }, [location]);
@@ -50,8 +53,7 @@ const ChatPage: React.FC = () => {
   // Group messages
   const chatsMap = new Map<string, any>();
   
-  // If we came from PropertyDetails but haven't sent a message yet, we need to initialize the chat block
-  if (activeChat && !messages.find(m => {
+  if (activeChat && !activeChat.startsWith('guest_') && !messages.find(m => {
     const mSenderId = m.sender_details?.id;
     const mRecipientId = m.recipient_details?.id;
     return `${m.property}_${mSenderId === userId ? mRecipientId : mSenderId}` === activeChat;
@@ -59,9 +61,10 @@ const ChatPage: React.FC = () => {
     const [propId, otherId] = activeChat.split('_');
     chatsMap.set(activeChat, {
       chatId: activeChat,
+      type: 'property',
       propertyId: propId,
       otherUserId: otherId,
-      otherUser: { username: 'Пользователь ' + otherId }, // placeholder until first message
+      otherUser: { username: 'Пользователь ' + otherId },
       messages: []
     });
   }
@@ -80,6 +83,7 @@ const ChatPage: React.FC = () => {
     if (!chatsMap.has(chatId)) {
       chatsMap.set(chatId, {
         chatId,
+        type: 'property',
         propertyId,
         otherUser,
         otherUserId,
@@ -90,18 +94,40 @@ const ChatPage: React.FC = () => {
   });
 
   const chats = Array.from(chatsMap.values());
-  const activeChatData = activeChat ? chatsMap.get(activeChat) : null;
+  let activeChatData = null;
+  
+  if (activeChat?.startsWith('guest_')) {
+     const gChat = guestChats.find(c => 'guest_' + c.session_id === activeChat);
+     if (gChat) {
+        activeChatData = {
+           chatId: 'guest_' + gChat.session_id,
+           type: 'guest',
+           sessionId: gChat.session_id,
+           otherUser: { first_name: 'Гость ' + gChat.session_id.substring(0, 4) },
+           messages: gChat.messages
+        };
+     }
+  } else {
+     activeChatData = activeChat ? chatsMap.get(activeChat) : null;
+  }
 
   const sendMessage = async () => {
     if (!newMessage.trim() || !activeChatData) return;
     try {
-      await axios.post(`${API_BASE}/api/chats/`, {
-        recipient: activeChatData.otherUserId,
-        property: activeChatData.propertyId,
-        message_text: newMessage
-      }, { headers: { Authorization: `Bearer ${token}` }});
+      if (activeChatData.type === 'guest') {
+         await axios.post(`${API_BASE}/api/guest-messages/`, {
+           session_id: activeChatData.sessionId,
+           text: newMessage
+         }, { headers: { Authorization: `Bearer ${token}` }});
+      } else {
+         await axios.post(`${API_BASE}/api/chats/`, {
+           recipient: activeChatData.otherUserId,
+           property: activeChatData.propertyId,
+           message_text: newMessage
+         }, { headers: { Authorization: `Bearer ${token}` }});
+      }
       setNewMessage('');
-      fetchMessages();
+      fetchData();
     } catch (error) {
       console.error(error);
       toast.error('Ошибка при отправке сообщения');
@@ -112,7 +138,9 @@ const ChatPage: React.FC = () => {
     <div className="container chat-container">
       <div className="card chat-sidebar">
         <h3 className="chat-sidebar-title">Диалоги</h3>
-        {chats.length === 0 ? <p style={{ color: 'var(--text-light)' }}>У вас пока нет активных диалогов</p> : chats.map(c => (
+        {chats.length === 0 && guestChats.length === 0 ? <p style={{ color: 'var(--text-light)' }}>У вас пока нет активных диалогов</p> : null}
+        
+        {chats.map(c => (
           <div 
             key={c.chatId} 
             onClick={() => setActiveChat(c.chatId)}
@@ -122,22 +150,49 @@ const ChatPage: React.FC = () => {
             <div className="chat-item-meta">Объект #{c.propertyId}</div>
           </div>
         ))}
+
+        {guestChats.length > 0 && (
+           <>
+             <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1rem', color: 'var(--text-light)' }}>Чаты с сайта (Гости)</h4>
+             {guestChats.map(c => (
+               <div 
+                 key={c.session_id} 
+                 onClick={() => setActiveChat('guest_' + c.session_id)}
+                 className={`chat-item ${activeChat === 'guest_' + c.session_id ? 'active' : ''}`}
+               >
+                 <div className="chat-item-name">Гость {c.session_id.substring(0, 4)}</div>
+                 <div className="chat-item-meta">Сообщений: {c.messages?.length || 0}</div>
+               </div>
+             ))}
+           </>
+        )}
       </div>
       
       <div className="card chat-main">
         {activeChatData ? (
           <>
             <div className="chat-header">
-              Чат с {activeChatData.otherUser?.first_name || activeChatData.otherUser?.username} (Объект #{activeChatData.propertyId})
+              Чат с {activeChatData.otherUser?.first_name || activeChatData.otherUser?.username}
+              {activeChatData.type === 'property' && ` (Объект #${activeChatData.propertyId})`}
             </div>
             <div className="chat-messages">
               {activeChatData.messages.length === 0 && <p style={{ color: 'var(--text-light)', textAlign: 'center' }}>Нет сообщений. Напишите первым!</p>}
               {activeChatData.messages.map((m: any) => {
-                const isMine = m.sender_details?.id === userId;
+                let isMine = false;
+                let text = '';
+                
+                if (activeChatData.type === 'guest') {
+                   isMine = m.sender === 'staff';
+                   text = m.text;
+                } else {
+                   isMine = m.sender_details?.id === userId;
+                   text = m.message_text;
+                }
+                
                 return (
                   <div key={m.id} className={`chat-message-container ${isMine ? 'mine' : 'theirs'}`}>
                     <div className="chat-message-bubble">
-                      {m.message_text}
+                      {text}
                     </div>
                     <div className="chat-message-time">
                       {new Date(m.sent_at).toLocaleTimeString('ru-RU')}

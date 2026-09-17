@@ -34,8 +34,8 @@ const Contacts: React.FC = () => {
             <i className="pi pi-map-marker text-primary"></i> Наш офис
           </h3>
           <p style={{ color: 'var(--text-light)', fontSize: '1.1rem', lineHeight: 1.6 }}>
-            Краснодарский край, ул. Курортный проспект, д. 100<br />
-            Бизнес-центр "Южный", офис 404
+            Краснодарский край, г. Белореченск<br />
+            ул. Толстого, 51
           </p>
         </div>
 

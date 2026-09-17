@@ -8,7 +8,7 @@ const OfficesSection: React.FC = () => {
         <div className="split-card-content">
           <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '1rem' }}>Центральный офис Юг-Хаус</h3>
           <p style={{ fontSize: '1.125rem', color: 'var(--text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <i className="pi pi-map-marker text-primary"></i> ул. Ленина 10, Краснодарский край
+            <i className="pi pi-map-marker text-primary"></i> ул. Толстого, 51, г. Белореченск, Краснодарский край
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', color: 'var(--text-light)' }}>
             <p><strong>Режим работы:</strong><br/> Пн-Пт: 9:00 - 18:00<br/> Сб: 9:00 - 14:00<br/> Вс: Выходной</p>

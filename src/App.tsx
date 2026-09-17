@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingChatWidget from './components/FloatingChatWidget';
 import Home from './pages/Home';
 import CatalogPage from './pages/CatalogPage';
 import PropertyDetails from './pages/PropertyDetails';
@@ -15,6 +16,7 @@ import NotificationsPage from './pages/NotificationsPage';
 import ChatPage from './pages/ChatPage';
 import CreatePropertyPage from './pages/CreatePropertyPage';
 import About from './pages/About';
+import TeamPage from './pages/TeamPage';
 import Contacts from './pages/Contacts';
 import ReviewsPage from './pages/ReviewsPage';
 import MortgagePage from './pages/MortgagePage';
@@ -56,12 +58,14 @@ function App() {
             <Route path="/chat" element={<ChatPage />} />
             <Route path="/create-property" element={<CreatePropertyPage />} />
             <Route path="/about" element={<About />} />
+            <Route path="/team" element={<TeamPage />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/mortgage" element={<MortgagePage />} />
             <Route path="/reviews" element={<ReviewsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+        <FloatingChatWidget />
         <Footer />
       </div>
     </BrowserRouter>

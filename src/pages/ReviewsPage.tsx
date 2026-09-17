@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import CustomDropdown from '../components/CustomDropdown';
-
-const API_BASE = 'http://45.134.38.100';
+import { API_BASE } from '../api';
 
 const ReviewsPage: React.FC = () => {
   const [reviews, setReviews] = useState<any[]>([]);

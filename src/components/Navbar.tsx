@@ -158,6 +158,7 @@ const Navbar: React.FC = () => {
             <Link to="/mortgage">Ипотека</Link>
             <Link to="/reviews">Отзывы</Link>
             <Link to="/about">О компании</Link>
+            <Link to="/team">Сотрудники</Link>
             <Link to="/contacts">Контакты</Link>
           </nav>
           
@@ -185,6 +186,9 @@ const Navbar: React.FC = () => {
         </Link>
         <Link to="/about" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
           О компании <i className="pi pi-angle-right"></i>
+        </Link>
+        <Link to="/team" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+          Сотрудники <i className="pi pi-angle-right"></i>
         </Link>
         <Link to="/contacts" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
           Контакты <i className="pi pi-angle-right"></i>

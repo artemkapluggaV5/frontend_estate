@@ -84,6 +84,7 @@ const ViewingRequestModal: React.FC<ViewingRequestModalProps> = ({ propertyId, i
               value={name} 
               onChange={e => setName(e.target.value)} 
               required
+              placeholder="Ваше имя"
               className="form-control"
               style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border)', borderRadius: '4px', background: 'var(--background)', color: 'var(--text)' }}
             />
@@ -100,6 +101,7 @@ const ViewingRequestModal: React.FC<ViewingRequestModalProps> = ({ propertyId, i
                 value={phone} 
                 onChange={e => setPhone(e.target.value)} 
                 required
+                placeholder="+7 (999) 000-00-00"
                 className="form-control"
                 style={{ width: '100%', padding: '0.75rem', border: 'none', outline: 'none', background: 'var(--background)', color: 'var(--text)' }}
               />
@@ -113,6 +115,7 @@ const ViewingRequestModal: React.FC<ViewingRequestModalProps> = ({ propertyId, i
               value={email} 
               onChange={e => setEmail(e.target.value)} 
               required
+              placeholder="example@mail.ru"
               className="form-control"
               style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border)', borderRadius: '4px', background: 'var(--background)', color: 'var(--text)' }}
             />
@@ -125,6 +128,7 @@ const ViewingRequestModal: React.FC<ViewingRequestModalProps> = ({ propertyId, i
               onChange={e => setComment(e.target.value)} 
               required
               rows={4}
+              placeholder="Укажите удобное время для звонка или просмотра..."
               className="form-control"
               style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border)', borderRadius: '4px', background: 'var(--background)', color: 'var(--text)', resize: 'vertical' }}
             />
